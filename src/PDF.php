@@ -141,11 +141,11 @@ class PDF{
      *
      * @return string The rendered PDF as string
      */
-    public function output(){
+    public function output($options = array()){
         if(!$this->rendered){
             $this->render();
         }
-        return $this->dompdf->output();
+        return $this->dompdf->output($options);
     }
 
     /**
@@ -154,8 +154,8 @@ class PDF{
      * @param $filename
      * @return static
      */
-    public function save($filename){
-        $this->files->put($filename, $this->output());
+    public function save($filename, $options = array()){
+        $this->files->put($filename, $this->output($options));
         return $this;
     }
 
@@ -165,8 +165,8 @@ class PDF{
      * @param string $filename
      * @return \Illuminate\Http\Response
      */
-    public function download($filename = 'document.pdf' ){
-        $output = $this->output();
+    public function download($filename = 'document.pdf', $options = array()){
+        $output = $this->output($options);
         return new Response($output, 200, array(
                 'Content-Type' => 'application/pdf',
                 'Content-Disposition' =>  'attachment; filename="'.$filename.'"'
@@ -179,8 +179,8 @@ class PDF{
      * @param string $filename
      * @return \Illuminate\Http\Response
      */
-    public function stream($filename = 'document.pdf' ){
-        $output = $this->output();
+    public function stream($filename = 'document.pdf', $options = array()){
+        $output = $this->output($options);
         return new Response($output, 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' =>  'inline; filename="'.$filename.'"',
